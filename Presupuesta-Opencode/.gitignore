@@ -1,4 +1,13 @@
+# Dependencias
+node_modules/
+
+# Entorno: los secretos nunca se versionan; .env.example sí
 .env
-node_modules
-.env
-.env*.local
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+
+# Sistema
+.DS_Store
