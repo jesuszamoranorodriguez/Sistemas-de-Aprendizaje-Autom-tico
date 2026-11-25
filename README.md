@@ -6,8 +6,10 @@ revisa y valida los precios, y el cliente lo acepta desde un enlace.
 
 ## Estado
 
-Fase 0 completada: proyecto Next.js creado y preparado para desplegar. Todavía
-no hay Supabase ni Gemini conectados; eso llega en las fases 1 y 3.
+Fase 1 completada: Supabase conectado y acceso con email y contraseña. Cada
+cuenta tiene su perfil fiscal y las fotos se guardan en un bucket privado. La
+confirmación de email está desactivada durante el desarrollo. La fase 2 añade
+la creación manual de presupuestos; Gemini llega en la fase 3.
 
 ## Requisitos
 

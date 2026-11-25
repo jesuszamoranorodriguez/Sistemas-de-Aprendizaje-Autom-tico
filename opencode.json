@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "google/gemini-3.8-flash",
   "plugin": ["@plannotator/opencode@latest", "envsitter-guard@latest"],
   "mcp": {
     "supabase": {
