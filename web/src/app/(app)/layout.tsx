@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 
 import { cerrarSesion } from "@/actions/auth";
+import { NavPrincipal } from "@/components/layout/NavPrincipal";
 import { obtenerSesion } from "@/lib/auth";
 
 async function NombreCuenta() {
@@ -29,48 +30,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </a>
 
       <header className="border-b border-tinta/15">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-5 py-4 sm:px-8">
-          <div className="flex items-baseline gap-6">
+        <div className="mx-auto max-w-5xl px-5 sm:px-8">
+          <div className="flex items-center justify-between gap-4 py-4">
             <Link
               href="/panel"
               className="text-lg font-extrabold tracking-tight"
             >
               Presupuesta
             </Link>
-            <nav aria-label="Principal">
-              <ul className="flex items-baseline gap-5">
-                <li>
-                  <Link
-                    href="/panel"
-                    className="py-2 text-sm font-medium text-plano underline-offset-4 hover:underline"
-                  >
-                    Panel
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/onboarding"
-                    className="text-sm font-medium text-tinta/70 underline-offset-4 hover:underline"
-                  >
-                    Datos fiscales
-                  </Link>
-                </li>
-              </ul>
-            </nav>
+
+            <div className="flex items-center gap-4">
+              <Suspense fallback={null}>
+                <NombreCuenta />
+              </Suspense>
+              <form action={cerrarSesion}>
+                <button
+                  type="submit"
+                  className="py-2 text-sm font-medium text-plano underline-offset-4 hover:underline"
+                >
+                  Salir
+                </button>
+              </form>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <Suspense fallback={null}>
-              <NombreCuenta />
-            </Suspense>
-            <form action={cerrarSesion}>
-              <button
-                type="submit"
-                className="py-2 text-sm font-medium text-plano underline-offset-4 hover:underline"
-              >
-                Salir
-              </button>
-            </form>
+          <div className="border-t border-tinta/10">
+            <NavPrincipal />
           </div>
         </div>
       </header>

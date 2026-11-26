@@ -79,3 +79,14 @@
     transparent 72%
   );
 }
+
+/* Diálogos nativos: fondo oscurecido y sin margen automático roto en móvil. */
+.dialogo::backdrop {
+  background-color: rgb(20 35 43 / 0.55);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

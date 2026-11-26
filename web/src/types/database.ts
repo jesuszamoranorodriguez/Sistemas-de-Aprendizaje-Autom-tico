@@ -14,6 +14,199 @@ export type Database = {
   }
   public: {
     Tables: {
+      clientes: {
+        Row: {
+          actualizado_en: string
+          ciudad: string | null
+          cp: string | null
+          creado_en: string
+          direccion: string | null
+          email: string | null
+          id: string
+          nif: string | null
+          nombre: string
+          propietario_id: string
+          telefono: string | null
+        }
+        Insert: {
+          actualizado_en?: string
+          ciudad?: string | null
+          cp?: string | null
+          creado_en?: string
+          direccion?: string | null
+          email?: string | null
+          id?: string
+          nif?: string | null
+          nombre: string
+          propietario_id: string
+          telefono?: string | null
+        }
+        Update: {
+          actualizado_en?: string
+          ciudad?: string | null
+          cp?: string | null
+          creado_en?: string
+          direccion?: string | null
+          email?: string | null
+          id?: string
+          nif?: string | null
+          nombre?: string
+          propietario_id?: string
+          telefono?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clientes_propietario_id_fkey"
+            columns: ["propietario_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partidas: {
+        Row: {
+          cantidad: number
+          confianza: Database["public"]["Enums"]["nivel_confianza"] | null
+          creado_en: string
+          descripcion: string
+          id: string
+          importe: number | null
+          orden: number
+          origen: Database["public"]["Enums"]["origen_partida"]
+          precio_confirmado: boolean
+          precio_unitario: number
+          presupuesto_id: string
+          tipo: Database["public"]["Enums"]["tipo_partida"]
+          unidad: string
+        }
+        Insert: {
+          cantidad?: number
+          confianza?: Database["public"]["Enums"]["nivel_confianza"] | null
+          creado_en?: string
+          descripcion: string
+          id?: string
+          importe?: number | null
+          orden?: number
+          origen?: Database["public"]["Enums"]["origen_partida"]
+          precio_confirmado?: boolean
+          precio_unitario?: number
+          presupuesto_id: string
+          tipo?: Database["public"]["Enums"]["tipo_partida"]
+          unidad?: string
+        }
+        Update: {
+          cantidad?: number
+          confianza?: Database["public"]["Enums"]["nivel_confianza"] | null
+          creado_en?: string
+          descripcion?: string
+          id?: string
+          importe?: number | null
+          orden?: number
+          origen?: Database["public"]["Enums"]["origen_partida"]
+          precio_confirmado?: boolean
+          precio_unitario?: number
+          presupuesto_id?: string
+          tipo?: Database["public"]["Enums"]["tipo_partida"]
+          unidad?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partidas_presupuesto_id_fkey"
+            columns: ["presupuesto_id"]
+            isOneToOne: false
+            referencedRelation: "presupuestos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      presupuestos: {
+        Row: {
+          actualizado_en: string
+          base_imponible: number
+          cliente_id: string | null
+          creado_en: string
+          cuota_iva: number
+          descripcion_averia: string | null
+          enviado_en: string | null
+          estado: Database["public"]["Enums"]["estado_presupuesto"]
+          ia_generado_en: string | null
+          ia_modelo: string | null
+          id: string
+          iva_porcentaje: number
+          notas: string | null
+          propietario_id: string
+          requiere_visita: boolean
+          respondido_en: string | null
+          titulo: string
+          token_publico: string
+          total: number
+          validado_en: string | null
+          validez_dias: number
+        }
+        Insert: {
+          actualizado_en?: string
+          base_imponible?: number
+          cliente_id?: string | null
+          creado_en?: string
+          cuota_iva?: number
+          descripcion_averia?: string | null
+          enviado_en?: string | null
+          estado?: Database["public"]["Enums"]["estado_presupuesto"]
+          ia_generado_en?: string | null
+          ia_modelo?: string | null
+          id?: string
+          iva_porcentaje?: number
+          notas?: string | null
+          propietario_id: string
+          requiere_visita?: boolean
+          respondido_en?: string | null
+          titulo: string
+          token_publico?: string
+          total?: number
+          validado_en?: string | null
+          validez_dias?: number
+        }
+        Update: {
+          actualizado_en?: string
+          base_imponible?: number
+          cliente_id?: string | null
+          creado_en?: string
+          cuota_iva?: number
+          descripcion_averia?: string | null
+          enviado_en?: string | null
+          estado?: Database["public"]["Enums"]["estado_presupuesto"]
+          ia_generado_en?: string | null
+          ia_modelo?: string | null
+          id?: string
+          iva_porcentaje?: number
+          notas?: string | null
+          propietario_id?: string
+          requiere_visita?: boolean
+          respondido_en?: string | null
+          titulo?: string
+          token_publico?: string
+          total?: number
+          validado_en?: string | null
+          validez_dias?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "presupuestos_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "presupuestos_propietario_id_fkey"
+            columns: ["propietario_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           actualizado_en: string
@@ -73,7 +266,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      recalcular_totales: {
+        Args: { p_presupuesto_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       estado_factura: "emitida" | "pagada" | "anulada"

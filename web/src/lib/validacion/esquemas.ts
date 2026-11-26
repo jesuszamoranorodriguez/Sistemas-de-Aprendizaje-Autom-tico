@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { TIPOS_PARTIDA } from "@/lib/presupuestos";
+
 const obligatorio = (mensaje: string) => z.string().trim().min(1, mensaje);
 
 /**
@@ -84,3 +86,129 @@ export const esquemaPerfil = z.object({
 });
 
 export type DatosPerfil = z.infer<typeof esquemaPerfil>;
+
+const validezDias = z.coerce
+  .number()
+  .int("La validez debe ser un número entero.")
+  .min(1, "La validez mínima es 1 día.")
+  .max(365, "La validez máxima es 365 días.");
+
+const ivaPorcentaje = z.coerce
+  .number()
+  .refine(
+    (valor) => valor === 21 || valor === 10,
+    "Elige un IVA válido: 21 % o 10 %.",
+  );
+
+export const esquemaCliente = z.object({
+  nombre: obligatorio("Escribe el nombre del cliente.").max(
+    160,
+    "El nombre es demasiado largo.",
+  ),
+  nif: z.string().trim().max(20, "El NIF es demasiado largo."),
+  email: z.union([
+    z.literal(""),
+    z.email("El correo del cliente no es válido."),
+  ]),
+  telefono: z.string().trim().max(30, "El teléfono es demasiado largo."),
+  direccion: z.string().trim().max(200, "La dirección es demasiado larga."),
+  cp: z.union([
+    z.literal(""),
+    z
+      .string()
+      .trim()
+      .regex(/^\d{5}$/, "El código postal debe tener 5 dígitos."),
+  ]),
+  ciudad: z.string().trim().max(120, "La ciudad es demasiado larga."),
+});
+
+export type DatosCliente = z.infer<typeof esquemaCliente>;
+
+export const esquemaNuevoPresupuesto = z
+  .object({
+    titulo: obligatorio("Ponle un título al presupuesto.").max(
+      160,
+      "El título es demasiado largo.",
+    ),
+    descripcion_averia: z
+      .string()
+      .trim()
+      .max(2000, "La descripción es demasiado larga."),
+    modo_cliente: z.enum(["existente", "nuevo"]),
+    cliente_id: z.string().trim(),
+    cliente_nombre: z.string().trim().max(160, "El nombre es demasiado largo."),
+    cliente_nif: z.string().trim().max(20, "El NIF es demasiado largo."),
+    cliente_email: z.union([
+      z.literal(""),
+      z.email("El correo del cliente no es válido."),
+    ]),
+    cliente_telefono: z
+      .string()
+      .trim()
+      .max(30, "El teléfono es demasiado largo."),
+    iva_porcentaje: ivaPorcentaje,
+    validez_dias: validezDias,
+  })
+  .superRefine((datos, ctx) => {
+    if (
+      datos.modo_cliente === "existente" &&
+      !z.uuid().safeParse(datos.cliente_id).success
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["cliente_id"],
+        message: "Elige un cliente de la lista.",
+      });
+    }
+
+    if (datos.modo_cliente === "nuevo" && !datos.cliente_nombre) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["cliente_nombre"],
+        message: "Escribe el nombre del cliente.",
+      });
+    }
+  });
+
+export type DatosNuevoPresupuesto = z.infer<typeof esquemaNuevoPresupuesto>;
+
+export const esquemaEditarPresupuesto = z.object({
+  titulo: obligatorio("Ponle un título al presupuesto.").max(
+    160,
+    "El título es demasiado largo.",
+  ),
+  descripcion_averia: z
+    .string()
+    .trim()
+    .max(2000, "La descripción es demasiado larga."),
+  cliente_id: z.uuid("Elige un cliente de la lista."),
+  validez_dias: validezDias,
+});
+
+export type DatosEditarPresupuesto = z.infer<typeof esquemaEditarPresupuesto>;
+
+export const esquemaPartida = z.object({
+  tipo: z.enum(TIPOS_PARTIDA),
+  descripcion: obligatorio("Describe la partida.").max(
+    300,
+    "La descripción es demasiado larga.",
+  ),
+  cantidad: z.coerce
+    .number()
+    .positive("La cantidad debe ser mayor que cero.")
+    .max(100000, "La cantidad es demasiado grande."),
+  unidad: obligatorio("Escribe la unidad (ud, h, m²…).").max(
+    12,
+    "La unidad es demasiado larga.",
+  ),
+  precio_unitario: z.coerce
+    .number()
+    .min(0, "El precio no puede ser negativo.")
+    .max(1000000, "El precio es demasiado alto."),
+});
+
+export type DatosPartida = z.infer<typeof esquemaPartida>;
+
+export const esquemaIva = z.object({
+  iva_porcentaje: ivaPorcentaje,
+});
