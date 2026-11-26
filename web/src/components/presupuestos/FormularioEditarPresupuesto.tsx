@@ -11,6 +11,7 @@ import { Boton } from "@/components/ui/Boton";
 import { Campo } from "@/components/ui/Campo";
 import { CampoArea } from "@/components/ui/CampoArea";
 import { CampoSelect } from "@/components/ui/CampoSelect";
+import { EnfocarErrores } from "@/components/ui/EnfocarErrores";
 
 const ESTADO_INICIAL: EstadoEditarPresupuesto = {};
 
@@ -49,6 +50,7 @@ export function FormularioEditarPresupuesto({ presupuesto, clientes }: Props) {
     <form action={accion} className="space-y-5" noValidate>
       <input type="hidden" name="presupuesto_id" value={presupuesto.id} />
 
+      <EnfocarErrores errores={estado.campos} />
       {estado.error ? <Aviso tono="error">{estado.error}</Aviso> : null}
 
       <div className="grid gap-5 sm:grid-cols-2">

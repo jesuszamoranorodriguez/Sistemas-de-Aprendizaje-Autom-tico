@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 
 import { cambiarIva, type EstadoIva } from "@/actions/presupuestos";
 import { Boton } from "@/components/ui/Boton";
@@ -16,10 +16,13 @@ type Props = {
 export function SelectorIva({ presupuestoId, ivaActual }: Props) {
   const [estado, accion, pendiente] = useActionState(cambiarIva, ESTADO_INICIAL);
   const [iva, setIva] = useState(String(ivaActual));
+  const [ivaGuardado, setIvaGuardado] = useState(ivaActual);
 
-  useEffect(() => {
+  // El servidor confirma el cambio: alineamos el selector sin perder el aviso.
+  if (ivaActual !== ivaGuardado) {
+    setIvaGuardado(ivaActual);
     setIva(String(ivaActual));
-  }, [ivaActual]);
+  }
 
   return (
     <form action={accion} className="mt-4 border-t border-tinta/10 pt-4">
@@ -28,10 +31,11 @@ export function SelectorIva({ presupuestoId, ivaActual }: Props) {
       <div className="flex items-end gap-3">
         <div className="min-w-0 flex-1">
           <CampoSelect
+            key={ivaGuardado}
             id="iva-presupuesto"
             name="iva_porcentaje"
             etiqueta="IVA"
-            value={iva}
+            defaultValue={String(ivaGuardado)}
             onChange={(evento) => setIva(evento.target.value)}
           >
             <option value="21">21 % — tipo general</option>

@@ -6,10 +6,13 @@ revisa y valida los precios, y el cliente lo acepta desde un enlace.
 
 ## Estado
 
-Fase 1 completada: Supabase conectado y acceso con email y contraseña. Cada
-cuenta tiene su perfil fiscal y las fotos se guardan en un bucket privado. La
-confirmación de email está desactivada durante el desarrollo. La fase 2 añade
-la creación manual de presupuestos; Gemini llega en la fase 3.
+Fase 2 completada: Supabase conectado, acceso con email y contraseña, perfil
+fiscal por cuenta y fotos en un bucket privado. Cada profesional gestiona sus
+clientes y crea presupuestos manuales con partidas, totales automáticos e IVA
+del 21 % o el 10 %. Los presupuestos aceptados o facturados quedan protegidos y
+nada se envía al cliente sin revisión previa. La confirmación de email sigue
+desactivada durante el desarrollo. Gemini llega en la fase 3 y el envío y la
+aceptación por enlace en la fase 4.
 
 ## Requisitos
 

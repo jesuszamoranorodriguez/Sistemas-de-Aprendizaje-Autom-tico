@@ -12,6 +12,7 @@ import { Boton, clasesBoton } from "@/components/ui/Boton";
 import { Campo } from "@/components/ui/Campo";
 import { CampoArea } from "@/components/ui/CampoArea";
 import { CampoSelect } from "@/components/ui/CampoSelect";
+import { EnfocarErrores } from "@/components/ui/EnfocarErrores";
 
 const ESTADO_INICIAL: EstadoNuevoPresupuesto = {};
 
@@ -42,6 +43,7 @@ export function FormularioNuevoPresupuesto({ clientes, ivaDefecto }: Props) {
 
   return (
     <form action={accion} className="space-y-10" noValidate>
+      <EnfocarErrores errores={estado.campos} />
       {estado.error ? <Aviso tono="error">{estado.error}</Aviso> : null}
 
       <fieldset className="border-t border-tinta/20 pt-6">

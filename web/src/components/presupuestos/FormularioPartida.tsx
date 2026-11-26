@@ -8,6 +8,7 @@ import { Aviso } from "@/components/ui/Aviso";
 import { Boton, clasesBoton } from "@/components/ui/Boton";
 import { Campo } from "@/components/ui/Campo";
 import { CampoSelect } from "@/components/ui/CampoSelect";
+import { EnfocarErrores } from "@/components/ui/EnfocarErrores";
 import { formatearEuros } from "@/lib/format/moneda";
 import {
   ETIQUETAS_TIPO,
@@ -71,6 +72,7 @@ export function FormularioPartida({
       <input type="hidden" name="presupuesto_id" value={presupuestoId} />
       {partida ? <input type="hidden" name="id" value={partida.id} /> : null}
 
+      <EnfocarErrores errores={estado.campos} />
       {estado.error ? (
         <Aviso tono="error" className="mb-5">
           {estado.error}

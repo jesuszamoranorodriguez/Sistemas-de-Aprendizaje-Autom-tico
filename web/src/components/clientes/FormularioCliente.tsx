@@ -6,6 +6,7 @@ import { guardarCliente, type EstadoCliente } from "@/actions/clientes";
 import { Aviso } from "@/components/ui/Aviso";
 import { Boton, clasesBoton } from "@/components/ui/Boton";
 import { Campo } from "@/components/ui/Campo";
+import { EnfocarErrores } from "@/components/ui/EnfocarErrores";
 
 const ESTADO_INICIAL: EstadoCliente = {};
 
@@ -55,6 +56,7 @@ export function FormularioCliente({ cliente, onExito }: Props) {
     <form action={accion} className="space-y-5" noValidate>
       {cliente ? <input type="hidden" name="id" value={cliente.id} /> : null}
 
+      <EnfocarErrores errores={estado.campos} />
       {estado.error ? <Aviso tono="error">{estado.error}</Aviso> : null}
 
       <div className="grid gap-5 sm:grid-cols-2">
